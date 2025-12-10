@@ -13,6 +13,11 @@ local camera = workspace.CurrentCamera
 local Configs = {
     IsActive = true,
     VelocityPrediction = false,
+    ShowLockonVisual = true
+}
+
+local Assets = {
+    Lockon_Visual = nil
 }
 
 local Target = {
@@ -21,23 +26,37 @@ local Target = {
 }
 
 --// Functions
+local function init()
+    --[ Creating the Lock on Visual ]
+    Assets.Lockon_Visual = Instance.new("BillboardGui")
+end
+
 local function InputBegan(input: InputObject, gameProcessedEvent: boolean)
     if gameProcessedEvent then return end
 
     
 end
 
-local function TouchTapInWorld(position: Vector2, gameProcessedEvent: boolean)
-    local ray = camera:ScreenPointToRay(position.X, position.Y)
-    local rayResult: RaycastResult = workspace:Raycast(ray.Origin, ray.Direction * 200)
+local function TouchTap(positions: Array<Vector2>, gameProcessedEvent: boolean)
+    
+end
 
-    print(rayResult.Instance.Name)
+local function CharacterAdded(_char: Model)
+    char = _char
+    hum = _char:WaitForChild("Humanoid")
+    init()
+end
+
+local function Runtime(deltaTime: number)
+    if not Configs.IsActive then return end
+
+
 end
 
 --// Signals
+RunService.RenderStepped:Connect()
 UserInputService.InputBegan:Connect(InputBegan)
-UserInputService.TouchTap:Connect(TouchTapInWorld)
-
-
+UserInputService.TouchTap:Connect(TouchTap)
+plr.CharacterAdded:Connect(CharacterAdded)
 
 print("Universal Lock_on Loaded Successfully!")

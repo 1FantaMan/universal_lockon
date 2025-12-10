@@ -1,6 +1,13 @@
 --// Services
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+--// Player
+local plr = Players.LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+local hum = char:WaitForChild("Humanoid")
+local camera = workspace.CurrentCamera
 
 --// Variables
 local Configs = {
@@ -15,10 +22,22 @@ local Target = {
 
 --// Functions
 local function InputBegan(input: InputObject, gameProcessedEvent: boolean)
+    if gameProcessedEvent then return end
+
     
+end
+
+local function TouchTapInWorld(position: Vector2, gameProcessedEvent: boolean)
+    local ray = camera:ScreenPointToRay(position.X, position.Y)
+    local rayResult: RaycastResult = workspace:Raycast(ray.Origin, ray.Direction * 200)
+
+    print(rayResult.Instance.Name)
 end
 
 --// Signals
 UserInputService.InputBegan:Connect(InputBegan)
+UserInputService.TouchTap:Connect(TouchTapInWorld)
+
+
 
 print("Universal Lock_on Loaded Successfully!")
